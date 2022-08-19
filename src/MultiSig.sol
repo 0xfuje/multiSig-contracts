@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
 contract MultiSig {
@@ -90,8 +90,8 @@ contract MultiSig {
         emit DepositFrom(msg.sender, msg.value);
     }
 
-    function submit(address _to, uint _value, bytes calldata _data)
-        external onlyOwner
+    function submit(address _to, uint _value, bytes calldata _data) external
+        onlyOwner
     {
         transactions[nextTxId] = Transaction({
             to: _to,
@@ -106,7 +106,7 @@ contract MultiSig {
     }
 
     function approve(uint _txId) external
-        onlyOwner txExists(_txId) notExecuted(_txId) notApproved(_txId)
+        onlyOwner txExists(_txId) notExecuted(_txId) notApproved(_txId) 
     {
         txApprovalVote[_txId][msg.sender] = true;
         emit ApproveFrom(msg.sender, _txId);
@@ -118,7 +118,8 @@ contract MultiSig {
         }
     }
 
-    function execute(uint _txId) external onlyOwner txExists(_txId) notExecuted(_txId) 
+    function execute(uint _txId) external 
+        onlyOwner txExists(_txId) notExecuted(_txId) 
     {
         require(
             transactions[_txId].status == Status.Approved,
@@ -134,7 +135,9 @@ contract MultiSig {
         emit Execute(_txId);
     }
 
-    function revoke(uint _txId) external txExists(_txId) notExecuted(_txId) {
+    function revoke(uint _txId) external 
+        txExists(_txId) notExecuted(_txId) 
+    {
         require(
             transactions[_txId].status == Status.Approved,
             "only approved transactions can be revoked"
