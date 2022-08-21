@@ -48,38 +48,4 @@ contract MultiSigFactoryTest is Test {
         uint256 _nextTxId = abi.decode(data1, (uint256));
         assertEq(_nextTxId, 0); 
     }
-
-    function testFactoryExecute() public {
-        vm.startPrank(alice);
-        address multiSig = msf.deploy(owners, 2);
-        vm.deal(multiSig, 10 ether);
-
-        (bool success0, ) = multiSig.call(abi.encodeWithSignature(
-            "submit()",
-            "0x6813eb9362372eef6200f3b1dbc3f819671cba69",
-            1000000000000000000,
-            "0x68692063686c6f65"
-        ));
-        assertTrue(success0);
-
-        (bool success1, ) = multiSig.call(abi.encodeWithSignature(
-            "approve()", 0
-        ));
-        assertTrue(success1);
-        vm.stopPrank();
-
-        vm.startPrank(bob);
-        (bool success2, ) = multiSig.call(abi.encodeWithSignature(
-            "approve()", 0
-        ));
-        assertTrue(success2);
-
-        (bool success3, ) = multiSig.call(abi.encodeWithSignature(
-            "execute()", 0
-        ));
-        assertTrue(success3);
-
-
-        assertEq(chloe.balance, 1 ether);
-    }
 }

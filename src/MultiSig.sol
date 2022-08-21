@@ -106,7 +106,7 @@ contract MultiSig {
     }
 
     function approve(uint _txId) external
-        onlyOwner txExists(_txId) notExecuted(_txId) notApproved(_txId) 
+        onlyOwner txExists(_txId) notExecuted(_txId)
     {
         txApprovalVote[_txId][msg.sender] = true;
         emit ApproveFrom(msg.sender, _txId);
